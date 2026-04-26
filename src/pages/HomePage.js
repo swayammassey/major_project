@@ -7,12 +7,12 @@ import {
   GraduationCap,
   TrendingUp,
   Users,
-  Award,
   Briefcase,
   BadgeCheck,
   Megaphone,
 } from 'lucide-react';
 import { department } from '../data/department';
+import { useAdminData } from '../context/AdminDataContext';
 
 function GradientStatCard({ icon: Icon, label, value, sublabel, gradient }) {
   return (
@@ -72,54 +72,28 @@ function SectionHeader({ title, subtitle, actionLabel, onAction }) {
   );
 }
 
-function StudentCard({ rank, name, id, year, cgpa, skills, highlight, badgeCount }) {
-  const rankColor = rank === 1 ? 'bg-amber-500' : rank === 2 ? 'bg-slate-400' : 'bg-orange-500';
-
+function StudentTableRow({ rank, name, id, year, cgpa, skills, badgeCount }) {
+  const rankColor = rank <= 3 ? 'text-blue-700' : 'text-slate-700';
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-lg font-semibold text-white">
-            {name.slice(0, 1).toUpperCase()}
-          </div>
-          <div>
-            <div className="font-semibold text-slate-900">{name}</div>
-            <div className="text-xs text-slate-500">
-              {id} • Year {year}
-            </div>
-          </div>
+    <tr className="border-t border-slate-100">
+      <td className={`px-3 py-3 text-sm font-semibold ${rankColor}`}>#{rank}</td>
+      <td className="px-3 py-3">
+        <div className="font-semibold text-slate-900">{name}</div>
+        <div className="text-xs text-slate-500">{id}</div>
+      </td>
+      <td className="px-3 py-3 text-sm text-slate-700">Year {year}</td>
+      <td className="px-3 py-3 text-sm font-semibold text-emerald-700">{cgpa}</td>
+      <td className="px-3 py-3">
+        <div className="flex flex-wrap gap-1.5">
+          {skills.slice(0, 2).map((s) => (
+            <span key={s} className="rounded-md bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-700">
+              {s}
+            </span>
+          ))}
         </div>
-
-        <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white ${rankColor}`}>
-          #{rank}
-        </div>
-      </div>
-
-      <div className="mt-4 flex items-center justify-between">
-        <div className="inline-flex items-center gap-2 text-sm">
-          <TrendingUp className="h-4 w-4 text-emerald-600" />
-          <span className="text-slate-600">CGPA:</span>
-          <span className="font-semibold text-emerald-700">{cgpa}</span>
-        </div>
-        <div className="text-xs text-slate-500">{badgeCount} </div>
-      </div>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {skills.map((s) => (
-          <span key={s} className="rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-blue-600">
-            {s}
-          </span>
-        ))}
-        {highlight ? (
-          <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">+{highlight}</span>
-        ) : null}
-      </div>
-
-      <div className="mt-4 inline-flex items-center gap-2 text-xs text-slate-500">
-        <Award className="h-3.5 w-3.5 text-amber-500" />
-        {badgeCount > 2 ? 'Research Paper Published in Springer' : 'Dean\'s list / awards'}
-      </div>
-    </div>
+      </td>
+      <td className="px-3 py-3 text-xs text-slate-600">{badgeCount} achievements</td>
+    </tr>
   );
 }
 
@@ -177,6 +151,7 @@ function AnnouncementCard({ type, title, date, body, accentColor }) {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { announcements } = useAdminData();
 
   const students = useMemo(
     () => [
@@ -243,6 +218,14 @@ export default function HomePage() {
     ],
     []
   );
+
+  const latestAnnouncements = useMemo(() => announcements.slice(0, 3), [announcements]);
+
+  const toneByType = (type) => {
+    if (type === 'Exam') return 'red';
+    if (type === 'Placement') return 'emerald';
+    return 'blue';
+  };
 
   return (
     <div className="bg-slate-50">
@@ -341,30 +324,22 @@ export default function HomePage() {
                 </div>
 
                 <div className="mt-5 space-y-4">
-                  <AnnouncementCard
-                    type="Exam"
-                    title="Mid-Term Examinations Schedule Released"
-                    date="Nov 15"
-                    body="The mid-term examination schedule for all years has been released. Exams will commence from December 1st, 2025. Check your portal for detailed timetable."
-                    accentColor="red"
-                  />
-                  <AnnouncementCard
-                    type="Event"
-                    title="Industry Expert Talk on AI/ML"
-                    date="Nov 16"
-                    body={
-                      'Guest lecture by Mr. Suresh Menon, Lead Data Scientist at Microsoft, on "Future of AI in Enterprise Applications". ' +
-                      'Date: November 25th, 2025 at 2:00 PM in Seminar Hall A.'
-                    }
-                    accentColor="blue"
-                  />
-                  <AnnouncementCard
-                    type="Placement"
-                    title="Campus Placement Drive - TCS"
-                    date="Nov 17"
-                    body="TCS will be conducting an on-campus placement drive for final year students. Eligible students should register by November 22nd. Package: 7-9 LPA."
-                    accentColor="emerald"
-                  />
+                  {latestAnnouncements.length ? (
+                    latestAnnouncements.map((item) => (
+                      <AnnouncementCard
+                        key={item.id}
+                        type={item.type}
+                        title={item.title}
+                        date={item.date}
+                        body={item.summary}
+                        accentColor={toneByType(item.type)}
+                      />
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                      No announcements published yet.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -457,10 +432,29 @@ export default function HomePage() {
                 onAction={() => navigate('/students')}
               />
 
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {students.map((s) => (
-                  <StudentCard key={s.id} {...s} />
-                ))}
+              <div className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+                <div className="border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800">
+                  Student Merit Board
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-left">
+                    <thead className="bg-white text-xs uppercase tracking-wide text-slate-500">
+                      <tr>
+                        <th className="px-3 py-3">Rank</th>
+                        <th className="px-3 py-3">Student</th>
+                        <th className="px-3 py-3">Year</th>
+                        <th className="px-3 py-3">CGPA</th>
+                        <th className="px-3 py-3">Top Skills</th>
+                        <th className="px-3 py-3">Highlights</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {students.map((s) => (
+                        <StudentTableRow key={s.id} {...s} />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 

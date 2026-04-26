@@ -9,7 +9,7 @@ import {
   ClipboardList,
   BadgeCheck,
 } from 'lucide-react';
-import { getEventById } from '../data/events';
+import { useAdminData } from '../context/AdminDataContext';
 
 function Progress({ label, value }) {
   return (
@@ -36,8 +36,9 @@ function InfoRow({ label, value }) {
 
 export default function EventDetailsPage() {
   const { id } = useParams();
+  const { eventRecords } = useAdminData();
 
-  const event = useMemo(() => getEventById(id), [id]);
+  const event = useMemo(() => eventRecords.find((item) => item.id === id), [id, eventRecords]);
 
   if (!event) {
     return (

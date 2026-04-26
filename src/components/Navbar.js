@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useAdminAuth } from '../context/AdminAuthContext';
 
 const navItemBase = 'px-3 py-2 text-sm font-medium transition-colors';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAdminAuth();
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -72,13 +74,24 @@ export default function Navbar() {
           </NavLink>
         </nav>
 
-        <button
-          type="button"
-          onClick={() => navigate('/admin')}
-          className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
-        >
-          Admin Login
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => navigate(isAuthenticated ? '/admin/dashboard' : '/admin')}
+            className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+          >
+            {isAuthenticated ? 'Dashboard' : 'Admin Login'}
+          </button>
+          {isAuthenticated ? (
+            <button
+              type="button"
+              onClick={logout}
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Logout
+            </button>
+          ) : null}
+        </div>
       </div>
     </header>
   );

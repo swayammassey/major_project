@@ -11,7 +11,7 @@ import {
   Link as LinkIcon,
   Trophy,
 } from 'lucide-react';
-import { getStudentById } from '../data/students';
+import { useAdminData } from '../context/AdminDataContext';
 
 function Pill({ children }) {
   return (
@@ -60,8 +60,9 @@ function LinkButton({ href, icon: Icon, label }) {
 
 export default function StudentDetailsPage() {
   const { id } = useParams();
+  const { studentRecords } = useAdminData();
 
-  const profile = useMemo(() => getStudentById(id), [id]);
+  const profile = useMemo(() => studentRecords.find((student) => student.id === id), [id, studentRecords]);
 
   if (!profile) {
     return (

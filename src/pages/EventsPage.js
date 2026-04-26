@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, CalendarDays, Filter, Search, Users } from 'lucide-react';
-import { events } from '../data/events';
+import { useAdminData } from '../context/AdminDataContext';
 
 function CategoryPill({ active, children, onClick }) {
   return (
@@ -74,17 +74,18 @@ function EventCard({ item, onOpen }) {
 
 export default function EventsPage() {
   const navigate = useNavigate();
+  const { eventRecords } = useAdminData();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
 
   const categories = useMemo(() => {
-    const set = new Set(events.map((e) => e.category));
+    const set = new Set(eventRecords.map((e) => e.category));
     return ['All', ...Array.from(set)];
-  }, []);
+  }, [eventRecords]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return events
+    return eventRecords
       .filter((e) => (category === 'All' ? true : e.category === category))
       .filter((e) => {
         if (!q) return true;
@@ -94,7 +95,7 @@ export default function EventsPage() {
           e.tags.some((t) => t.toLowerCase().includes(q))
         );
       });
-  }, [query, category]);
+  }, [query, category, eventRecords]);
 
   return (
     <div className="bg-slate-50">
