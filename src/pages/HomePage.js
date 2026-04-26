@@ -12,6 +12,7 @@ import {
   BadgeCheck,
   Megaphone,
 } from 'lucide-react';
+import { department } from '../data/department';
 
 function GradientStatCard({ icon: Icon, label, value, sublabel, gradient }) {
   return (
@@ -138,15 +139,38 @@ function EventCard({ title, date, description, participants }) {
   );
 }
 
-function AnnouncementCard({ type, title, date, body, accent }) {
+function AnnouncementCard({ type, title, date, body, accentColor }) {
+  const accentClass =
+    accentColor === 'red'
+      ? 'bg-red-400'
+      : accentColor === 'blue'
+        ? 'bg-blue-400'
+        : accentColor === 'emerald'
+          ? 'bg-emerald-400'
+          : 'bg-slate-300';
+
+  const pillClass =
+    accentColor === 'red'
+      ? 'bg-red-50 text-red-700 ring-red-200'
+      : accentColor === 'blue'
+        ? 'bg-blue-50 text-blue-700 ring-blue-200'
+        : accentColor === 'emerald'
+          ? 'bg-emerald-50 text-emerald-700 ring-emerald-200'
+          : 'bg-slate-50 text-slate-700 ring-slate-200';
+
   return (
-    <div className={`rounded-2xl border bg-white p-5 shadow-sm ${accent}`}>
-      <div className="flex items-start justify-between">
-        <span className="rounded-full bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">{type}</span>
-        <span className="text-xs text-slate-500">{date}</span>
+    <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+      <div className={`absolute left-0 top-0 h-full w-1 ${accentClass}`} />
+
+      <div className="flex items-start justify-between gap-3 pl-1">
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold ring-1 ${pillClass}`}>{type}</span>
+        <span className="whitespace-nowrap text-xs font-medium text-slate-500">{date}</span>
       </div>
-      <div className="mt-3 text-lg font-semibold text-slate-900">{title}</div>
-      <p className="mt-2 text-sm text-slate-600">{body}</p>
+
+      <div className="pl-1">
+        <div className="mt-3 text-base font-semibold leading-snug text-slate-900">{title}</div>
+        <p className="mt-2 line-clamp-4 text-sm leading-relaxed text-slate-600">{body}</p>
+      </div>
     </div>
   );
 }
@@ -228,12 +252,12 @@ export default function HomePage() {
           <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)' , backgroundSize: '22px 22px' }} />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-10 text-white sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-10 text-white sm:px-6 sm:pb-16 sm:pt-14 lg:px-8">
           <div className="max-w-3xl">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
               Welcome to CSE – Data Science
             </h1>
-            <p className="mt-4 text-base text-white/90 sm:text-lg">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
               Empowering the next generation of data scientists and AI innovators through cutting-edge
               education and research.
             </p>
@@ -242,7 +266,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => navigate('/events')}
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-white/90"
+                className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-white/90"
               >
                 Explore Events
                 <ArrowRight className="h-4 w-4" />
@@ -250,176 +274,230 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => navigate('/faculty')}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/30 hover:bg-white/15"
+                className="inline-flex items-center gap-2 rounded-2xl bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/30 hover:bg-white/15"
               >
                 Meet Our Faculty
               </button>
             </div>
+          </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <GradientStatCard
-                icon={Users}
-                label="Total Students"
-                value="320"
-                sublabel="Across all years"
-                gradient="bg-gradient-to-br from-blue-600 to-blue-700"
-              />
-              <GradientStatCard
-                icon={CalendarDays}
-                label="Events This Year"
-                value="24"
-                sublabel="Workshops & Hackathons"
-                gradient="bg-gradient-to-br from-emerald-500 to-teal-600"
-              />
-              <GradientStatCard
-                icon={BookOpen}
-                label="Research Publications"
-                value="145"
-                sublabel="By faculty & students"
-                gradient="bg-gradient-to-br from-indigo-500 to-violet-600"
-              />
-              <GradientStatCard
-                icon={TrendingUp}
-                label="Placement Rate"
-                value="92%"
-                sublabel="Top companies"
-                gradient="bg-gradient-to-br from-cyan-600 to-teal-700"
-              />
-            </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <GradientStatCard
+              icon={Users}
+              label="Total Students"
+              value="320"
+              sublabel="Across all years"
+              gradient="bg-gradient-to-br from-blue-600 to-blue-700"
+            />
+            <GradientStatCard
+              icon={CalendarDays}
+              label="Events This Year"
+              value="24"
+              sublabel="Workshops & Hackathons"
+              gradient="bg-gradient-to-br from-emerald-500 to-teal-600"
+            />
+            <GradientStatCard
+              icon={BookOpen}
+              label="Research Publications"
+              value="145"
+              sublabel="By faculty & students"
+              gradient="bg-gradient-to-br from-indigo-500 to-violet-600"
+            />
+            <GradientStatCard
+              icon={TrendingUp}
+              label="Placement Rate"
+              value="92%"
+              sublabel="Top companies"
+              gradient="bg-gradient-to-br from-cyan-600 to-teal-700"
+            />
           </div>
         </div>
       </section>
 
-      <section className="mx-auto -mt-8 max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+      <section className="relative z-10 mx-auto -mt-10 max-w-7xl px-4 pb-14 pt-10 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-3">
           <MiniStat icon={BadgeCheck} value="27" label="Student Certifications" />
           <MiniStat icon={GraduationCap} value="22" label="Projects Completed" />
           <MiniStat icon={Briefcase} value="8" label="Students with Internships" />
         </div>
 
-        <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" id="overview">
-          <div className="flex items-start gap-3">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-600 p-2 text-white">
-              <Megaphone className="h-7 w-7" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-semibold text-slate-900">Department Overview</h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                The Department of Computer Science and Engineering - Data Science at Geethanjali College of
-                Engineering and Technology is committed to excellence in education, research, and
-                innovation. Our curriculum is designed to equip students with strong foundations in
-                computer science, mathematics, statistics, and specialized knowledge in machine learning,
-                big data analytics, and artificial intelligence.
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-slate-600">
-                We foster an environment that encourages critical thinking, problem-solving, and hands-on
-                learning through industry collaborations, research projects, and cutting-edge
-                laboratories. Our faculty members are experienced researchers and industry practitioners
-                who mentor students to become future leaders in data science and analytics.
-              </p>
-            </div>
-          </div>
+        <div className="mt-8 grid gap-6 lg:grid-cols-12">
+          <aside className="lg:col-span-4 lg:order-2" id="announcements">
+            <div className="lg:sticky lg:top-24">
+              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900">Important Announcements</div>
+                    <div className="mt-1 text-sm text-slate-600">Don't miss out on updates</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/announcements')}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700"
+                  >
+                    View All
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <div className="text-sm font-semibold text-slate-900">Industry Partnerships</div>
-              <div className="mt-2 text-sm text-slate-600">
-                Collaborations with Microsoft, Google, Amazon, and leading tech companies
+                <div className="mt-5 space-y-4">
+                  <AnnouncementCard
+                    type="Exam"
+                    title="Mid-Term Examinations Schedule Released"
+                    date="Nov 15"
+                    body="The mid-term examination schedule for all years has been released. Exams will commence from December 1st, 2025. Check your portal for detailed timetable."
+                    accentColor="red"
+                  />
+                  <AnnouncementCard
+                    type="Event"
+                    title="Industry Expert Talk on AI/ML"
+                    date="Nov 16"
+                    body={
+                      'Guest lecture by Mr. Suresh Menon, Lead Data Scientist at Microsoft, on "Future of AI in Enterprise Applications". ' +
+                      'Date: November 25th, 2025 at 2:00 PM in Seminar Hall A.'
+                    }
+                    accentColor="blue"
+                  />
+                  <AnnouncementCard
+                    type="Placement"
+                    title="Campus Placement Drive - TCS"
+                    date="Nov 17"
+                    body="TCS will be conducting an on-campus placement drive for final year students. Eligible students should register by November 22nd. Package: 7-9 LPA."
+                    accentColor="emerald"
+                  />
+                </div>
               </div>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <div className="text-sm font-semibold text-slate-900">State-of-the-Art Labs</div>
-              <div className="mt-2 text-sm text-slate-600">
-                AI/ML Lab, Big Data Analytics Lab, High-Performance Computing Center
+          </aside>
+
+          <div className="lg:col-span-8 lg:order-1">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" id="overview">
+              <div className="flex items-start gap-3">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-600 p-2 text-white">
+                  <Megaphone className="h-7 w-7" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-semibold text-slate-900">Department Overview</h2>
+                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-600">
+                    {department.overview}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 grid gap-4 md:grid-cols-3">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <div className="text-sm font-semibold text-slate-900">Industry Partnerships</div>
+                  <div className="mt-2 text-sm text-slate-600">
+                    Collaborations with Microsoft, Google, Amazon, and leading tech companies
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <div className="text-sm font-semibold text-slate-900">State-of-the-Art Labs</div>
+                  <div className="mt-2 text-sm text-slate-600">
+                    AI/ML Lab, Big Data Analytics Lab, High-Performance Computing Center
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <div className="text-sm font-semibold text-slate-900">Research Focus</div>
+                  <div className="mt-2 text-sm text-slate-600">
+                    Deep Learning, NLP, Computer Vision, Healthcare Analytics, and IoT
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <div className="text-sm font-semibold text-slate-900">Research Focus</div>
-              <div className="mt-2 text-sm text-slate-600">
-                Deep Learning, NLP, Computer Vision, Healthcare Analytics, and IoT
+
+            <div className="mt-6 grid gap-4" id="vision-mission">
+              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <div className="text-xl font-semibold text-slate-900">Vision</div>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">{department.vision}</p>
+              </div>
+              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <div className="text-xl font-semibold text-slate-900">Mission</div>
+                <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-600">
+                  {department.mission}
+                </p>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="mt-14" id="top-students">
-          <SectionHeader
-            title="Top Performing Students"
-            subtitle="Excellence in academics and beyond"
-            actionLabel="View All Students"
-            onAction={() => navigate('/students')}
-          />
+            <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" id="peos">
+              <div className="text-xl font-semibold text-slate-900">Program Educational Objectives (PEOs)</div>
+              <div className="mt-4 space-y-3">
+                {department.programEducationalObjectives.map((peo, idx) => (
+                  <div key={peo} className="flex gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+                    <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+                      {idx + 1}
+                    </div>
+                    <div className="text-sm leading-relaxed text-slate-700">{peo}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {students.map((s) => (
-              <StudentCard key={s.id} {...s} />
-            ))}
-          </div>
-        </div>
+            <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" id="pos">
+              <div className="text-xl font-semibold text-slate-900">Programme Outcomes (POs)</div>
+              <div className="mt-4 space-y-3">
+                {department.programOutcomes.map((po) => (
+                  <div key={po.id} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="font-semibold text-slate-900">
+                        {po.id}: {po.title}
+                      </div>
+                    </div>
+                    <div className="mt-2 text-sm leading-relaxed text-slate-700">{po.description}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        <div className="mt-14" id="events">
-          <SectionHeader title="Upcoming Events" subtitle="Workshops, seminars and conferences" actionLabel="View All" onAction={() => navigate('/events')} />
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <EventCard
-              title="Workshop"
-              date="Jan 15, 2025"
-              description="A comprehensive workshop on machine learning fundamentals, model evaluation, and hands-on labs."
-              participants={85}
-            />
-            <EventCard
-              title="Hackathon"
-              date="Feb 20, 2025"
-              description="24-hour hackathon focused on solving real-world data science problems with mentorship and prizes."
-              participants={120}
-            />
-            <EventCard
-              title="Expert Talk"
-              date="Mar 10, 2025"
-              description="Expert talk on latest trends in deep learning, including transformers and efficient fine-tuning."
-              participants={150}
-            />
-            <EventCard
-              title="Conference"
-              date="Apr 5, 2025"
-              description="Two-day conference on big data technologies including Hadoop, Spark, and cloud analytics."
-              participants={200}
-            />
-          </div>
-        </div>
+            <div className="mt-14" id="top-students">
+              <SectionHeader
+                title="Top Performing Students"
+                subtitle="Excellence in academics and beyond"
+                actionLabel="View All Students"
+                onAction={() => navigate('/students')}
+              />
 
-        <div className="mt-14 pb-14" id="announcements">
-          <SectionHeader
-            title="Important Announcements"
-            subtitle="Don't miss out on important updates"
-            actionLabel="View All"
-            onAction={() => navigate('/announcements')}
-          />
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {students.map((s) => (
+                  <StudentCard key={s.id} {...s} />
+                ))}
+              </div>
+            </div>
 
-          <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            <AnnouncementCard
-              type="Exam"
-              title="Mid-Term Examinations Schedule Released"
-              date="Nov 15"
-              body="The mid-term examination schedule for all years has been released. Exams will commence from December 1st, 2025. Check your portal for detailed timetable."
-              accent="border-l-4 border-l-red-400"
-            />
-            <AnnouncementCard
-              type="Event"
-              title="Industry Expert Talk on AI/ML"
-              date="Nov 16"
-              body={
-                'Guest lecture by Mr. Suresh Menon, Lead Data Scientist at Microsoft, on "Future of AI in Enterprise Applications". ' +
-                'Date: November 25th, 2025 at 2:00 PM in Seminar Hall A.'
-              }
-              accent="border-l-4 border-l-blue-400"
-            />
-            <AnnouncementCard
-              type="Placement"
-              title="Campus Placement Drive - TCS"
-              date="Nov 17"
-              body="TCS will be conducting an on-campus placement drive for final year students. Eligible students should register by November 22nd. Package: 7-9 LPA."
-              accent="border-l-4 border-l-emerald-400"
-            />
+            <div className="mt-14 pb-14" id="events">
+              <SectionHeader
+                title="Upcoming Events"
+                subtitle="Workshops, seminars and conferences"
+                actionLabel="View All"
+                onAction={() => navigate('/events')}
+              />
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <EventCard
+                  title="Workshop"
+                  date="Jan 15, 2025"
+                  description="A comprehensive workshop on machine learning fundamentals, model evaluation, and hands-on labs."
+                  participants={85}
+                />
+                <EventCard
+                  title="Hackathon"
+                  date="Feb 20, 2025"
+                  description="24-hour hackathon focused on solving real-world data science problems with mentorship and prizes."
+                  participants={120}
+                />
+                <EventCard
+                  title="Expert Talk"
+                  date="Mar 10, 2025"
+                  description="Expert talk on latest trends in deep learning, including transformers and efficient fine-tuning."
+                  participants={150}
+                />
+                <EventCard
+                  title="Conference"
+                  date="Apr 5, 2025"
+                  description="Two-day conference on big data technologies including Hadoop, Spark, and cloud analytics."
+                  participants={200}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

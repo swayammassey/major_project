@@ -2,6 +2,13 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
+import EventsPage from './pages/EventsPage';
+import EventDetailsPage from './pages/EventDetailsPage';
+import FacultyPage from './pages/FacultyPage';
+import FacultyDetailsPage from './pages/FacultyDetailsPage';
+import StudentsPage from './pages/StudentsPage';
+import StudentDetailsPage from './pages/StudentDetailsPage';
 import PlaceholderPage from './pages/PlaceholderPage';
 
 function App() {
@@ -10,10 +17,13 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/events" element={<PlaceholderPage title="Events" />} />
-        <Route path="/faculty" element={<PlaceholderPage title="Faculty" />} />
-        <Route path="/students" element={<PlaceholderPage title="Students" />} />
-        <Route path="/announcements" element={<PlaceholderPage title="Announcements" />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/events/:id" element={<EventDetailsPage />} />
+        <Route path="/faculty" element={<FacultyPage />} />
+        <Route path="/faculty/:id" element={<FacultyDetailsPage />} />
+        <Route path="/students" element={<StudentsPage />} />
+        <Route path="/students/:id" element={<StudentDetailsPage />} />
+        <Route path="/announcements" element={<AnnouncementsPage />} />
         <Route path="/admin" element={<PlaceholderPage title="Admin Login" />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -10,14 +10,11 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-50">
-            <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-slate-700">
-              GC
-            </span>
+          <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
             <img
               src="/logo.png"
               alt="Department logo"
-              className="relative h-full w-full object-contain p-1"
+              className="relative h-full w-full object-contain p-1.5"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}
