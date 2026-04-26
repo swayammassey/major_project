@@ -1,6 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { faculty } from '../data/faculty';
-import { students } from '../data/students';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { useAdminData } from '../context/AdminDataContext';
 

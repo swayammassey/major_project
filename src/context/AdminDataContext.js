@@ -272,6 +272,15 @@ export function AdminDataProvider({ children }) {
       achievementRecords,
       placementRecords,
       departmentProfile,
+      publishAnnouncement,
+      updateAnnouncements,
+      deleteAnnouncement,
+      updateStudentRecords,
+      updateFacultyRecords,
+      updateEventRecords,
+      updateAchievementRecords,
+      updatePlacementRecords,
+      updateDepartmentProfile,
     ]
   );
 
