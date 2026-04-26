@@ -21,8 +21,8 @@ function GradientStatCard({ icon: Icon, label, value, sublabel, gradient }) {
         <div className="absolute -bottom-14 -left-14 h-52 w-52 rounded-full bg-white/20" />
       </div>
       <div className="relative flex items-start justify-between gap-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15">
-          <Icon className="h-5 w-5" />
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/15 p-2">
+          <Icon className="h-6 w-6" />
         </div>
         <div className="text-right">
           <div className="text-3xl font-semibold leading-none">{value}</div>
@@ -39,8 +39,8 @@ function GradientStatCard({ icon: Icon, label, value, sublabel, gradient }) {
 function MiniStat({ icon: Icon, value, label }) {
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50">
-        <Icon className="h-5 w-5 text-blue-600" />
+      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-50 p-2">
+        <Icon className="h-6 w-6 text-blue-600" />
       </div>
       <div>
         <div className="text-xl font-semibold text-slate-900">{value}</div>
@@ -222,8 +222,8 @@ export default function HomePage() {
 
   return (
     <div className="bg-slate-50">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative">
+        <div className="absolute inset-0 overflow-hidden">
           <div className="h-full w-full bg-gradient-to-r from-indigo-900 via-blue-700 to-teal-600" />
           <div className="absolute inset-0 opacity-15" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)' , backgroundSize: '22px 22px' }} />
         </div>
@@ -255,37 +255,37 @@ export default function HomePage() {
                 Meet Our Faculty
               </button>
             </div>
-          </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <GradientStatCard
-              icon={Users}
-              label="Total Students"
-              value="320"
-              sublabel="Across all years"
-              gradient="bg-gradient-to-br from-blue-600 to-blue-700"
-            />
-            <GradientStatCard
-              icon={CalendarDays}
-              label="Events This Year"
-              value="24"
-              sublabel="Workshops & Hackathons"
-              gradient="bg-gradient-to-br from-emerald-500 to-teal-600"
-            />
-            <GradientStatCard
-              icon={BookOpen}
-              label="Research Publications"
-              value="145"
-              sublabel="By faculty & students"
-              gradient="bg-gradient-to-br from-indigo-500 to-violet-600"
-            />
-            <GradientStatCard
-              icon={TrendingUp}
-              label="Placement Rate"
-              value="92%"
-              sublabel="Top companies"
-              gradient="bg-gradient-to-br from-cyan-600 to-teal-700"
-            />
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <GradientStatCard
+                icon={Users}
+                label="Total Students"
+                value="320"
+                sublabel="Across all years"
+                gradient="bg-gradient-to-br from-blue-600 to-blue-700"
+              />
+              <GradientStatCard
+                icon={CalendarDays}
+                label="Events This Year"
+                value="24"
+                sublabel="Workshops & Hackathons"
+                gradient="bg-gradient-to-br from-emerald-500 to-teal-600"
+              />
+              <GradientStatCard
+                icon={BookOpen}
+                label="Research Publications"
+                value="145"
+                sublabel="By faculty & students"
+                gradient="bg-gradient-to-br from-indigo-500 to-violet-600"
+              />
+              <GradientStatCard
+                icon={TrendingUp}
+                label="Placement Rate"
+                value="92%"
+                sublabel="Top companies"
+                gradient="bg-gradient-to-br from-cyan-600 to-teal-700"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -299,8 +299,8 @@ export default function HomePage() {
 
         <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" id="overview">
           <div className="flex items-start gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white">
-              <Megaphone className="h-6 w-6" />
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-600 p-2 text-white">
+              <Megaphone className="h-7 w-7" />
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-slate-900">Department Overview</h2>
