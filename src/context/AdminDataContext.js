@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { announcements as defaultAnnouncements } from '../data/announcements';
 import { students as defaultStudents } from '../data/students';
 import { faculty as defaultFaculty } from '../data/faculty';
@@ -245,44 +245,24 @@ export function AdminDataProvider({ children }) {
     persistData({ departmentProfile: next });
   };
 
-  const value = useMemo(
-    () => ({
-      announcements,
-      studentRecords,
-      facultyRecords,
-      eventRecords,
-      achievementRecords,
-      placementRecords,
-      departmentProfile,
-      publishAnnouncement,
-      updateAnnouncements,
-      deleteAnnouncement,
-      updateStudentRecords,
-      updateFacultyRecords,
-      updateEventRecords,
-      updateAchievementRecords,
-      updatePlacementRecords,
-      updateDepartmentProfile,
-    }),
-    [
-      announcements,
-      studentRecords,
-      facultyRecords,
-      eventRecords,
-      achievementRecords,
-      placementRecords,
-      departmentProfile,
-      publishAnnouncement,
-      updateAnnouncements,
-      deleteAnnouncement,
-      updateStudentRecords,
-      updateFacultyRecords,
-      updateEventRecords,
-      updateAchievementRecords,
-      updatePlacementRecords,
-      updateDepartmentProfile,
-    ]
-  );
+  const value = {
+    announcements,
+    studentRecords,
+    facultyRecords,
+    eventRecords,
+    achievementRecords,
+    placementRecords,
+    departmentProfile,
+    publishAnnouncement,
+    updateAnnouncements,
+    deleteAnnouncement,
+    updateStudentRecords,
+    updateFacultyRecords,
+    updateEventRecords,
+    updateAchievementRecords,
+    updatePlacementRecords,
+    updateDepartmentProfile,
+  };
 
   return <AdminDataContext.Provider value={value}>{children}</AdminDataContext.Provider>;
 }
